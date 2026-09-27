@@ -1,0 +1,24 @@
+# Environment variables / secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Conda
+.conda/
+
+# Local database files (SQLite)
+*.db
+*.sqlite
+*.sqlite3
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
