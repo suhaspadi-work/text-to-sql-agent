@@ -12,7 +12,7 @@ A portable, natural-language-to-SQL agent built with LangChain, designed to plug
 - **Sample dataset:** [Chinook](https://github.com/lerocha/chinook-database) — a sample digital media store database (SQLite)
 
 ## Why Gemini
-Chosen for its genuinely free tier (rate-limited, not credit-limited) — useful for an iterative, debugging-heavy build like this one. The model provider is swappable via one config line (`init_chat_model`'s `model_provider` argument), so this isn't a hard dependency on Google specifically.
+Chosen for its free tier. Note: as of this build, `gemini-3.x-flash` models are capped at just 20 requests/day on the free tier — insufficient for iterative agent development (a single agent run can use 6-10+ calls). Switched to `gemini-3.5-flash-lite`, which offers 500 requests/day on the same free tier, with no code changes beyond the model string — a direct demonstration of this project's provider-agnostic design. The model provider itself remains swappable via one config line (`init_chat_model`'s `model_provider` argument).
 
 ## A note on `langchain-community`
 As of this project's build, `langchain-community` has been officially sunset (repo archived, no further fixes). However, `SQLDatabase` and `SQLDatabaseToolkit` — the core utilities this project relies on for schema introspection and portable DB connections — currently have **no successor package**; `langchain_classic` only re-exports the same (deprecated) code path. Both available import paths emit deprecation warnings that point at each other. This project uses `langchain_community.utilities.SQLDatabase` deliberately, with the dependency version pinned in `requirements.txt`, until the ecosystem settles on a stable successor.
@@ -64,9 +64,9 @@ Should print a response from the Gemini model, confirming your API key and depen
 - [x] Core dependencies installed
 - [x] Model connectivity verified (Gemini)
 - [x] Sample database (Chinook) downloaded and verified
-- [ ] Schema introspection tools wired up
-- [ ] SQL agent assembled (query tool + schema tool + model)
-- [ ] Human-in-the-loop safety gate verified
+- [x] Schema introspection tools wired up
+- [x] SQL agent assembled (query tool + schema tool + model)
+- [x] Human-in-the-loop safety gate verified (interrupt, approve, resume cycle)
 - [ ] Custom evaluation set built and run
-- [ ] Deliberate stress-testing (ambiguous questions, error recovery)
+- [ ] Deliberate stress-testing (ambiguous questions, error recovery, rejected/edited queries)
 - [ ] Tested against a second database engine (portability validation)
