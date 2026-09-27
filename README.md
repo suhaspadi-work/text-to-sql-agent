@@ -59,6 +59,9 @@ Should print a response from the Gemini model, confirming your API key and depen
 - **Portability first:** database connection is config-driven (`DATABASE_URL`), not hardcoded — swapping to Postgres/MySQL later should require no code changes, only a connection string and driver.
 - **Safety-scoped:** database access is intended to be read-only; a human-in-the-loop review step gates any potentially destructive query.
 
+## Known limitations
+- **Rejected queries can lead to fabricated answers.** When a human reviewer rejects a pending SQL query via the human-in-the-loop gate, the agent (as of the initial `create_agent` + `HumanInTheLoopMiddleware` setup) sometimes proceeds to generate a plausible-sounding final answer anyway — using general knowledge rather than actual query results — instead of clearly stating it could not retrieve the data. This was discovered through manual testing (see commit history) and is being addressed via a stronger system prompt instructing the agent to explicitly decline to answer when a query is rejected.
+
 ## Roadmap
 - [x] Environment + git setup
 - [x] Core dependencies installed
