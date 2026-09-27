@@ -60,8 +60,7 @@ Should print a response from the Gemini model, confirming your API key and depen
 - **Safety-scoped:** database access is intended to be read-only; a human-in-the-loop review step gates any potentially destructive query.
 
 ## Known limitations
-- **Rejected queries can lead to fabricated answers.** When a human reviewer rejects a pending SQL query via the human-in-the-loop gate, the agent (as of the initial `create_agent` + `HumanInTheLoopMiddleware` setup) sometimes proceeds to generate a plausible-sounding final answer anyway — using general knowledge rather than actual query results — instead of clearly stating it could not retrieve the data. This was discovered through manual testing (see commit history) and is being addressed via a stronger system prompt instructing the agent to explicitly decline to answer when a query is rejected.
-
+- ~~**Rejected queries can lead to fabricated answers.**~~ **Resolved.** Initial testing found that when a human reviewer rejected a pending SQL query via the human-in-the-loop gate, the agent sometimes proceeded to generate a plausible-sounding final answer anyway — using general/outside knowledge rather than actual query results — instead of clearly stating it could not retrieve the data. Fixed by adding an explicit instruction to the system prompt: on rejection, the agent must state it was unable to retrieve the data and stop, rather than guess. Verified via manual retest with the same question and rejection.
 ## Roadmap
 - [x] Environment + git setup
 - [x] Core dependencies installed
