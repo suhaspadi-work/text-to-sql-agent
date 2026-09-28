@@ -11,7 +11,12 @@ from langchain_community.agent_toolkits import SQLDatabaseToolkit
 load_dotenv()
 
 db = SQLDatabase.from_uri(os.environ["DATABASE_URL"])
-model = init_chat_model("gemini-3.5-flash-lite", model_provider="google_genai")
+model = init_chat_model(
+    os.environ.get("MODEL_NAME", "gemini-3.5-flash-lite"),
+    model_provider=os.environ.get("MODEL_PROVIDER", "google_genai"),
+    timeout=120,
+    max_retries=2,
+)
 
 toolkit = SQLDatabaseToolkit(db=db, llm=model)
 tools = toolkit.get_tools()
